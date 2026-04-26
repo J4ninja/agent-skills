@@ -1,0 +1,164 @@
+{
+  "skill_name": "code-citation",
+  "evals": [
+    {
+      "id": 1,
+      "name": "algorithm-reference-known",
+      "prompt": "Can you add citations to this Python function? It implements the Adam optimizer update step.\n\n```python\ndef adam_update(params, grads, m, v, t, lr=0.001, beta1=0.9, beta2=0.999, eps=1e-8):\n    m = beta1 * m + (1 - beta1) * grads\n    v = beta2 * v + (1 - beta2) * grads ** 2\n    m_hat = m / (1 - beta1 ** t)\n    v_hat = v / (1 - beta2 ** t)\n    params -= lr * m_hat / (np.sqrt(v_hat) + eps)\n    return params, m, v\n```",
+      "expected_output": "A Reference: citation pointing to the Kingma & Ba (2015) Adam paper (arxiv.org/abs/1412.6980), formatted as a Python # comment above the function definition.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "a1",
+          "name": "uses-reference-tag",
+          "description": "Output uses the Reference: tag (not Source: or Adapted from:), because Adam is a known algorithm, not copied code",
+          "check": "output contains '# Reference:'"
+        },
+        {
+          "id": "a2",
+          "name": "cites-adam-paper",
+          "description": "Citation includes the Kingma & Ba paper URL (arxiv.org/abs/1412.6980)",
+          "check": "output contains 'arxiv.org/abs/1412.6980' OR output contains 'Kingma' OR output contains 'Adam'"
+        },
+        {
+          "id": "a3",
+          "name": "python-comment-style",
+          "description": "Comment uses # prefix, correct for Python",
+          "check": "output contains '# Reference:' or '# Source:' or '# Adapted from:'"
+        },
+        {
+          "id": "a4",
+          "name": "citation-above-function",
+          "description": "Citation appears before the def adam_update line, not inside the docstring or function body",
+          "check": "citation line appears before 'def adam_update'"
+        },
+        {
+          "id": "a5",
+          "name": "no-fabricated-url",
+          "description": "No made-up or non-existent URLs in the output",
+          "check": "any URL in the output is a real, verifiable link (manually verify)"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "verbatim-copy-javascript",
+      "prompt": "I copied this debounce function from the Lodash source code. Can you add the right citation?\n\n```javascript\nfunction debounce(func, wait, options) {\n  let lastArgs, lastThis, maxWait, result, timerId, lastCallTime;\n  let lastInvokeTime = 0;\n  let leading = false;\n  let maxing = false;\n  let trailing = true;\n  // ... (full lodash debounce body)\n  return debounced;\n}\n```",
+      "expected_output": "A Source: citation pointing to the Lodash GitHub repository (github.com/lodash/lodash), formatted as a // comment above the function.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "a1",
+          "name": "uses-source-tag",
+          "description": "Uses Source: tag because the user said they copied it verbatim",
+          "check": "output contains '// Source:'"
+        },
+        {
+          "id": "a2",
+          "name": "cites-lodash",
+          "description": "Citation points to Lodash (github.com/lodash or the specific file)",
+          "check": "output contains 'lodash' (case-insensitive)"
+        },
+        {
+          "id": "a3",
+          "name": "javascript-comment-style",
+          "description": "Uses // style, correct for JavaScript",
+          "check": "output contains '// Source:'"
+        },
+        {
+          "id": "a4",
+          "name": "no-reference-tag",
+          "description": "Should not use Reference: tag since the user explicitly said they copied it",
+          "check": "output does NOT contain '// Reference:'"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "adapted-ros-cpp",
+      "prompt": "I adapted this C++ function from the ROS navigation stack, but I changed the cost calculation. Please cite it.\n\n```cpp\nvoid NavfnROS::computePotential(const geometry_msgs::Point& world_point) {\n  // custom modified cost logic\n  double wx = world_point.x;\n  double wy = world_point.y;\n  unsigned int mx, my;\n  costmap_->worldToMap(wx, wy, mx, my);\n  // ... modified potential computation\n}\n```",
+      "expected_output": "An Adapted from: citation pointing to the ROS navigation navfn package on GitHub, formatted as a // comment above the function.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "a1",
+          "name": "uses-adapted-from-tag",
+          "description": "Uses Adapted from: because the user said they changed the logic",
+          "check": "output contains '// Adapted from:'"
+        },
+        {
+          "id": "a2",
+          "name": "cites-ros-navigation",
+          "description": "Citation references the ROS navigation stack or navfn",
+          "check": "output contains 'ros' OR output contains 'navigation' (case-insensitive)"
+        },
+        {
+          "id": "a3",
+          "name": "cpp-comment-style",
+          "description": "Uses // style, correct for C++",
+          "check": "output contains '// Adapted from:'"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "original-code-no-citation",
+      "prompt": "Where does this come from? I wrote this myself from scratch to format dates.\n\n```python\ndef format_date_range(start, end, fmt='%B %d, %Y'):\n    \"\"\"Format a date range as a human-readable string.\"\"\"\n    if start.year == end.year and start.month == end.month:\n        return f\"{start.strftime('%B %d')}–{end.strftime('%d, %Y')}\"\n    elif start.year == end.year:\n        return f\"{start.strftime('%B %d')}–{end.strftime('%B %d, %Y')}\"\n    return f\"{start.strftime(fmt)}–{end.strftime(fmt)}\"\n```",
+      "expected_output": "No citation added. The skill should clearly state that the function is original and no citation is needed, rather than fabricating one.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "a1",
+          "name": "no-citation-added",
+          "description": "No # Source:, # Adapted from:, or # Reference: comment is inserted",
+          "check": "output does NOT contain '# Source:' AND output does NOT contain '# Adapted from:' AND output does NOT contain '# Reference:'"
+        },
+        {
+          "id": "a2",
+          "name": "explains-no-citation",
+          "description": "Response explains that the code is original and no citation is warranted",
+          "check": "output contains 'original' OR output contains 'no citation' OR output contains 'written from scratch' (case-insensitive)"
+        },
+        {
+          "id": "a3",
+          "name": "no-fabricated-url",
+          "description": "No URLs are invented just to have something to cite",
+          "check": "output does not contain an http:// or https:// URL that doesn't genuinely match this utility function"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "notebook-cell-kv-memory-network",
+      "prompt": "I'm working in a Jupyter notebook. Can you add a citation to this KVMemNet implementation?\n\n```python\nclass KVMemNet(nn.Module):\n    def __init__(self, vocab_size, embed_dim, num_hops=3):\n        super().__init__()\n        self.key_embed = nn.Embedding(vocab_size, embed_dim)\n        self.val_embed = nn.Embedding(vocab_size, embed_dim)\n        self.num_hops = num_hops\n\n    def forward(self, keys, values, query):\n        q = query\n        for _ in range(self.num_hops):\n            attn = torch.softmax(torch.matmul(q, self.key_embed(keys).T), dim=-1)\n            o = torch.matmul(attn, self.val_embed(values))\n            q = q + o\n        return q\n```",
+      "expected_output": "A Reference: citation pointing to the Miller et al. (2016) Key-Value Memory Networks paper (arxiv.org/abs/1606.03126), formatted as a # Python comment at the top of the code cell, above the class definition.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "a1",
+          "name": "uses-reference-tag",
+          "description": "Uses Reference: tag because this is an original implementation of a known paper",
+          "check": "output contains '# Reference:'"
+        },
+        {
+          "id": "a2",
+          "name": "cites-kv-memory-paper",
+          "description": "References the Miller et al. 2016 Key-Value Memory Networks paper",
+          "check": "output contains '1606.03126' OR output contains 'Miller' OR output contains 'Key-Value Memory'"
+        },
+        {
+          "id": "a3",
+          "name": "python-comment-style",
+          "description": "Uses # prefix (correct for Python code cells in notebooks)",
+          "check": "output contains '# Reference:'"
+        },
+        {
+          "id": "a4",
+          "name": "citation-above-class",
+          "description": "Citation is placed above the class KVMemNet definition line",
+          "check": "citation line appears before 'class KVMemNet'"
+        }
+      ]
+    }
+  ]
+}

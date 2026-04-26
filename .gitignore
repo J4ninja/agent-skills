@@ -2,3 +2,4 @@
 # Add any skill installed via `npx skills add` here
 .agents/skills/skill-creator/
 .agents/skills/vercel-react-best-practices/
+.agents/skills/find-skills
