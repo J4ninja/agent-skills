@@ -1,5 +1,2 @@
-# Third-party skills (restored via: npx skills experimental_install)
-# Add any skill installed via `npx skills add` here
-.agents/skills/skill-creator/
-.agents/skills/vercel-react-best-practices/
-.agents/skills/find-skills
+# Third-party skills are auto-ignored via .agents/skills/.gitignore
+# To restore them: npx skills add <registry-url> --skill <name>
